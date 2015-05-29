@@ -19,7 +19,7 @@ public final class Metric implements java.io.Serializable, com.dslplatform.clien
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + 1561116808;
+        result = prime * result + 553612886;
         result = prime * result + (this.name.hashCode());
         result = prime * result + ((int) (this.min ^ (this.min >>> 32)));
         result = prime * result + ((int) (this.max ^ (this.max >>> 32)));
