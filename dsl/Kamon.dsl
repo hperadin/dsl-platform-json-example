@@ -1,4 +1,5 @@
-module kamon {
+module kamon
+{
     aggregate MetricReport {
         List<Metric> metrics;
         Timestamp from;
