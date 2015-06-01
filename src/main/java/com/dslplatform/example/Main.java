@@ -5,6 +5,7 @@ import com.dslplatform.example.kamon.MetricReport;
 
 import java.util.Random;
 
+import com.dslplatform.patterns.Bytes;
 import org.joda.time.DateTime;
 
 import com.dslplatform.client.json.JsonReader;
@@ -23,10 +24,14 @@ public class Main {
         mr.serialize(sw, true);
         System.out.println("\nSerialized object as a JSON string: ");
         System.out.println(sw.toString());
-        final byte[] serialized = sw.toByteArray();
+        //Bytes has a reference to internal byte[] used during serialization
+        final Bytes serialized = sw.toBytes();
+        //Bytes also has few useful utility methods
+        //System.out.println(serialized.toUtf8());
 
         // Deserialization
-        final JsonReader jr = new JsonReader(serialized, null);
+        final JsonReader jr = new JsonReader(serialized.content, serialized.length, null);
+        //deserialize can return null, object instance or array list
         final MetricReport deserializedObject = (MetricReport) MetricReport.deserialize(jr, null);
         System.out.println("\nDeserialized object: ");
         out(deserializedObject);
@@ -47,8 +52,8 @@ public class Main {
 
     private static MetricReport randomMetricReport() {
         final MetricReport mr = new MetricReport();
-        mr.setFrom(new DateTime().minusDays(10));
-        mr.setTo(new DateTime());
+        mr.setFrom(DateTime.now().minusDays(10));
+        mr.setTo(DateTime.now());
         for (int i = 0; i < 10; i++) {
             mr.getMetrics().add(randomMetric());
         }
