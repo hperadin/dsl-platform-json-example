@@ -18,29 +18,39 @@ public class Main {
         final MetricReport mr = randomMetricReport();
 
         // Serialization
-        System.out.println("\nThe source object:");
+        System.out.println("\n==================");
+        System.out.println("The source object:");
+        System.out.println("==================\n");
         out(mr);
+
         final JsonWriter sw = new JsonWriter();
         mr.serialize(sw, true);
-        System.out.println("\nSerialized object as a JSON string: ");
-        System.out.println(sw.toString());
-        //Bytes has a reference to internal byte[] used during serialization
+
+        // Bytes has a reference to internal byte[] used during serialization
         final Bytes serialized = sw.toBytes();
-        //Bytes also has few useful utility methods
-        //System.out.println(serialized.toUtf8());
+
+        // Bytes also has few useful utility methods
+        System.out.println("\n===================================");
+        System.out.println("Serialized object as a JSON string:");
+        System.out.println("===================================\n");
+        System.out.println(serialized.toUtf8());
 
         // Deserialization
         final JsonReader jr = new JsonReader(serialized.content, serialized.length, null);
-        //deserialize can return null, object instance or array list
+
+        // deserialize can return null, object instance or array list
         final MetricReport deserializedObject = (MetricReport) MetricReport.deserialize(jr, null);
-        System.out.println("\nDeserialized object: ");
+        System.out.println("\n====================");
+        System.out.println("Deserialized object:");
+        System.out.println("====================\n");
         out(deserializedObject);
     }
 
     private static void out(final MetricReport mr) {
         System.out.println(mr.toString());
-        System.out.println("From: " + mr.getFrom().toString());
-        System.out.println("To: " + mr.getTo().toString());
+        System.out.println("From: " + mr.getFrom());
+        System.out.println("To: " + mr.getTo());
+        System.out.println();
         for (final Metric m : mr.getMetrics()) {
             out(m);
         }
